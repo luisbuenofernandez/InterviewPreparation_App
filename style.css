@@ -1,0 +1,34 @@
+/* 
+* {
+    border: 0.5px red dashed;
+} */
+
+.eight-px-separation {
+    margin: 8px;
+    border: 1px grey solid;
+}
+
+.buttons {
+  position: fixed;
+  justify-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+button {
+    height: 46px;
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+}
+
+#question {
+    font-size: 1.5em;
+}
+
+#editingData * {
+    background-color: skyblue;
+}
