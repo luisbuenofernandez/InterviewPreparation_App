@@ -29,6 +29,6 @@ textarea {
     font-size: 1.5em;
 }
 
-#editingData * {
+.manipulatingInformation * {
     background-color: skyblue;
 }

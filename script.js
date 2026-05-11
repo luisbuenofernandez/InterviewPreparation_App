@@ -1,101 +1,154 @@
-    
-    const url_interview_data = "https://api.jsonbin.io/v3/b/69ebbe8f856a6821896c0d22";
 
-    function showDataOnScreen(data) {
+const url_interview_data = "https://api.jsonbin.io/v3/b/69ebbe8f856a6821896c0d22";
 
-        let randomIndex = Math.floor(Math.random() * data.length);
-            
-            /* 
-            Why this works:
-            Math.random() → gives something like 0.37482
-            Multiply by data.length → scales it to your array size
-            Math.floor() → converts it into a valid integer index (0 to length-1)
-            */
+function showDataOnScreen(data) {
 
-        let randomQuestion = data[randomIndex];
-        console.log(randomQuestion);
+    let randomIndex = Math.floor(Math.random() * data.length);
 
-            /*
-            - Keep in mind that that behaviour must be avoided if we're comming 
-            back from just editing.In that case it should show the same data as before.
-            */
+    /* 
+    Why this works:
+    Math.random() → gives something like 0.37482
+    Multiply by data.length → scales it to your array size
+    Math.floor() → converts it into a valid integer index (0 to length-1)
+    */
 
-        console.log(randomQuestion.question);
-        document.getElementById("question").innerText = randomQuestion.question;
-        document.getElementById("explanation").innerHTML = randomQuestion.explanation;
-        document.getElementById("answer").innerHTML = randomQuestion.answer;
-        document.getElementById("example").innerHTML = randomQuestion.example;
-        document.getElementById("topic").innerHTML = randomQuestion.topic;
+    let randomQuestion = data[randomIndex];
+    console.log(randomQuestion);
 
-            /* 
-            Save the question on localStorage to coninue where you left every time. Useful 
-            when you edit and need to come back to the same question showing the new data, for example. 
-            */
+    /*
+    - Keep in mind that that behaviour must be avoided if we're comming 
+    back from just editing.In that case it should show the same data as before.
+    */
 
-        localStorage.setItem("currentQuestion", randomQuestion.question);
-        console.log("current Question in locaStorage");
-        console.log(localStorage.getItem("currentQuestion"));
-    }
+    console.log(randomQuestion.question);
+    document.getElementById("question").innerText = randomQuestion.question;
+    document.getElementById("explanation").innerHTML = randomQuestion.explanation;
+    document.getElementById("answer").innerHTML = randomQuestion.answer;
+    document.getElementById("example").innerHTML = randomQuestion.example;
+    document.getElementById("topic").innerHTML = randomQuestion.topic;
 
-    function btn_moveToNextQuestion(data) {
-        btn_nextQuestion = document.getElementById("nextQuestion");
-        btn_nextQuestion.addEventListener("click", () => {
-            console.log("click on btn_nextQuestion");
+    /* 
+    Save the question on localStorage to coninue where you left every time. Useful 
+    when you edit and need to come back to the same question showing the new data, for example. 
+    */
 
-            /* 
-            - Add here the behaviour for showing the next data in the array
-            - Se necesita un bucle for each para iterar en todos los indices del array
-            - Al llamar nuevamente a la funcion showDataOnScreen, la misma lo hace actualmente
-            sólo por el indice data[0] del array. Arreglar dicha función.      
-            */
+    localStorage.setItem("currentQuestion", randomQuestion.question);
+    console.log("current Question in locaStorage");
+    console.log(localStorage.getItem("currentQuestion"));
+}
 
-            showDataOnScreen(data);
-        });
-    }
+function btn_moveToNextQuestion(data) {
+    btn_nextQuestion = document.getElementById("nextQuestion");
+    btn_nextQuestion.addEventListener("click", () => {
+        console.log("click on btn_nextQuestion");
 
-    document.addEventListener("DOMContentLoaded", function () {
-        let dataSavedOnLocalStorage = localStorage.getItem("data_JSONBin");
-        console.log("data saved on localStorage: ");
-        console.log(dataSavedOnLocalStorage);
+        /* 
+        - Add here the behaviour for showing the next data in the array
+        - Se necesita un bucle for each para iterar en todos los indices del array
+        - Al llamar nuevamente a la funcion showDataOnScreen, la misma lo hace actualmente
+        sólo por el indice data[0] del array. Arreglar dicha función.      
+        */
 
-            /*
-            - The lines above are meant to bring back the last data that was uploaded to JSONBin.
-            In case of the API being offline or some other issues, localStorage has the latest 
-            most recent updates to show.
-            
-            - Still needed to figure out how to use it in case the JSONBin data is unreachable.
-        
-            - There's still the need of using STRINGIFY somewher with localStorage, but don't 
-            remember if it's with setItem or now with getItem.
-            */
+        showDataOnScreen(data);
+    });
+}
 
-        fetch(url_interview_data)
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json);
-                data = json.record.lines;
-                console.log(data);
-                // Save data on localStorage
-                localStorage.setItem("data_JSONBin", data);
+function toggleButtonsVisibilityAndEditableAreas() {
+    // Toggle: alternar entre estados.
 
-                showDataOnScreen(data);
-                btn_moveToNextQuestion(data);
+    document.querySelectorAll(".manipulatingInformation").forEach(btn => {
 
-                /* 
-                If the data is undefined, bring from the local json
-                
-                
-                if (url_interview_data === undefined) {
-    
-                fetch("data.json")
-                    .then(res => res.json())
-                    .then(json => {
-                        console.log(json);
-                        data = json.lines;
-                        console.log(data);
-                        showDataOnScreen(data);
-                    }
-                    ) 
+        btn.addEventListener("click", () => {
+
+            // Toggle all buttons
+            document.querySelectorAll("button").forEach(b => {
+
+                b.hidden = !b.hidden;
+                /* is basically shorthand for:
+
+                        if (b.hidden === true) {
+                        b.hidden = false;
+                        } else {
+                        b.hidden = true;
+                        } 
                 */
             });
+
+            // Toggle editable state
+            document.querySelectorAll(".editable").forEach(c => {
+
+                c.contentEditable =
+                    c.contentEditable === "true"
+                        ? "false"
+                        : "true";
+
+                /* 
+                is basically shorthand for:
+                
+                if (c.contentEditable === "true") {
+                    c.contentEditable = "false";
+                } else {
+                    c.contentEditable = "true";
+                }
+                */
+
+            });
+        });
     });
+}
+
+
+
+
+
+
+
+
+/* --------------- FROM HERE AND FORWARD, THE DOM BEHAVIOUR STARTS ------------------ */
+
+document.addEventListener("DOMContentLoaded", function () {
+    let dataSavedOnLocalStorage = localStorage.getItem("data_JSONBin");
+    console.log("data saved on localStorage: ");
+    console.log(dataSavedOnLocalStorage);
+
+    /*
+    - The lines above are meant to bring back the last data that was uploaded to JSONBin.
+    In case of the API being offline or some other issues, localStorage has the latest 
+    most recent updates to show.
+    
+    - Still needed to figure out how to use it in case the JSONBin data is unreachable.
+ 
+    - There's still the need of using STRINGIFY somewher with localStorage, but don't 
+    remember if it's with setItem or now with getItem.
+    */
+
+    fetch(url_interview_data)
+        .then((res) => res.json())
+        .then((json) => {
+            console.log(json);
+            data = json.record.lines;
+            console.log(data);
+            // Save data on localStorage
+            localStorage.setItem("data_JSONBin", data);
+
+            showDataOnScreen(data);
+            btn_moveToNextQuestion(data);
+            toggleButtonsVisibilityAndEditableAreas();
+            /* 
+            If the data is undefined, bring from the local json
+            
+            
+            if (url_interview_data === undefined) {
+ 
+            fetch("data.json")
+                .then(res => res.json())
+                .then(json => {
+                    console.log(json);
+                    data = json.lines;
+                    console.log(data);
+                    showDataOnScreen(data);
+                }
+                ) 
+            */
+        });
+});

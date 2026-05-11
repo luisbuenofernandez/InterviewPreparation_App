@@ -11,35 +11,43 @@
 <body>
 
     <section>
-        <div class="eight-px-separation">
-            <h1 id="question"></h1>
+        <div class="eight-px-separation editable" id="question" contentEditable="false"></div>
+     
+        <div class="eight-px-separation editable" id="explanation" contentEditable="false">
         </div>
-        <div class="eight-px-separation" id="explanation">
+        <div class="eight-px-separation editable" id="answer" contentEditable="false">
         </div>
-        <div class="eight-px-separation" id="answer">
+        <div class="eight-px-separation editable" id="example" contentEditable="false">
         </div>
-        <div class="eight-px-separation" id="example">
-        </div>
-        <div class="eight-px-separation" id="topic">
-        </div>
+
+        
+        <label for="topic">Category</label>
+        <select name="topic" id="topic">
+            <option value="Recruiter" selected>Recruiter</option>
+            <option value="Advice">Advice</option>
+            <option value="Candidate">Candidate</option>
+            <option value="Encouragement">Encouragement</option>
+            
+        </select>
     </section>
 
     <section id="buttonsHomePage" class="eight-px-separation buttons">
+        <button id="previousQuestion_btn" class="">Back</button>
         <button id="nextQuestion" class="">Next</button>
-        <div id="manipulatingInformation">
-            <button id="editCurrentQuestion">Edit</button>
-            <button class="saveChangesAndCancelChanges">
+
+        <div class="manipulatingInformation">
+            <button id="btn_editCurrentQuestion">Edit</button>
+            <button class="saveChangesAndCancelChanges" hidden>
                 Save
             </button>
-            <button class="saveChangesAndCancelChanges">
+            <button class="saveChangesAndCancelChanges" hidden>
                 Cancel
             </button>
-            <button class="saveChangesAndCancelChanges">
-                Add New
-            </button>
-
-            <button id="deleteCurrentQuestion">Delete</button>
         </div>
+
+        <button class="saveChangesAndCancelChanges">
+            Add New
+        </button><button id="deleteCurrentQuestion">Delete</button>
         <button id="showAllQuestions" onclick="window.location.href='showAllQuestions.html'">Search</button>
     </section>
 
